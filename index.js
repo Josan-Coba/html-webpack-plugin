@@ -22,6 +22,7 @@ const prettyError = require('./lib/errors.js');
 const chunkSorter = require('./lib/chunksorter.js');
 const getHtmlWebpackPluginHooks = require('./lib/hooks.js').getHtmlWebpackPluginHooks;
 const { assert } = require('console');
+const { TextEncoder, TextDecoder } = require('util');
 
 const fsReadFileAsync = promisify(fs.readFile);
 
@@ -133,7 +134,9 @@ class HtmlWebpackPlugin {
       require: require,
       htmlWebpackPluginPublicPath: publicPath,
       URL: require('url').URL,
-      __filename: templateWithoutLoaders
+      __filename: templateWithoutLoaders,
+      TextEncoder: TextEncoder,
+      TextDecoder: TextDecoder
     });
     const vmScript = new vm.Script(source, { filename: templateWithoutLoaders });
     // Evaluate code and cast to string
